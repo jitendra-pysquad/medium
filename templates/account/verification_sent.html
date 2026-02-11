@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Confirm your email – Medium</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: sohne, "Helvetica Neue", Helvetica, Arial, sans-serif;
+            background: #ffffff;
+            color: #242424;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .card {
+            max-width: 420px;
+            width: 100%;
+            padding: 40px;
+            border: 1px solid #e6e6e6;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .logo {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 24px;
+        }
+
+        h1 {
+            font-size: 22px;
+            margin-bottom: 12px;
+        }
+
+        p {
+            font-size: 15px;
+            color: #6b6b6b;
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        .email {
+            font-weight: 500;
+            color: #242424;
+        }
+
+        .btn-primary {
+            display: inline-block;
+            background: #1a8917;
+            color: #ffffff;
+            padding: 10px 18px;
+            border-radius: 22px;
+            text-decoration: none;
+            font-size: 14px;
+            margin-bottom: 16px;
+        }
+
+        .btn-secondary {
+            display: block;
+            font-size: 13px;
+            color: #1a8917;
+            text-decoration: none;
+        }
+
+        .footer {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #9a9a9a;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <div class="logo">Medium</div>
+
+        <h1>Confirm your email address</h1>
+
+        <p>
+            We’ve sent a confirmation link to<br />
+            <span class="email">{{ request.user.email }}</span>
+        </p>
+
+        <p>
+            Click the link in the email to activate your account and start reading and writing on Medium.
+        </p>
+
+        <a href="{% url 'account_email' %}" class="btn-primary">Resend confirmation email</a>
+
+        <a href="/accounts/logout/" class="btn-secondary">Use a different email</a>
+
+        <div class="footer">
+            If you don’t see the email, check your spam folder.
+        </div>
+    </div>
+
+</body>
+</html>

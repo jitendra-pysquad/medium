@@ -1,0 +1,105 @@
+{% load i18n %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Email confirmed</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: sohne, "Helvetica Neue", Helvetica, Arial, sans-serif;
+            background: #f9f9f9;
+            color: #242424;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .card {
+            max-width: 420px;
+            width: 100%;
+            padding: 40px;
+            border: 1px solid #e6e6e6;
+            border-radius: 12px;
+            text-align: center;
+            background: #ffffff;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.05);
+        }
+
+        .logo {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 24px;
+        }
+
+        .icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+            color: #1a8917;
+        }
+
+        h1 {
+            font-size: 22px;
+            margin-bottom: 12px;
+        }
+
+        p {
+            font-size: 15px;
+            color: #6b6b6b;
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        .btn-primary {
+            display: inline-block;
+            background: #1a8917;
+            color: #ffffff;
+            padding: 10px 24px;
+            border-radius: 22px;
+            text-decoration: none;
+            font-size: 14px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary:hover {
+            background: #146e12;
+        }
+
+        .footer {
+            margin-top: 24px;
+            font-size: 12px;
+            color: #9a9a9a;
+        }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <div class="logo">Medium</div>
+    <div class="icon">✅</div>
+
+    <h1>Email confirmed</h1>
+
+    {% if confirmation %}
+        <p>Your email address has been successfully verified.</p>
+
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn-primary">Continue to home</button>
+        </form>
+    {% else %}
+        <p>This confirmation link is invalid or expired.</p>
+    {% endif %}
+
+    <div class="footer">
+        Welcome to Medium 👋
+    </div>
+</div>
+
+</body>
+</html>

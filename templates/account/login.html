@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Medium Clone | Auth</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: #ffffff;
+            color: #242424;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .auth-container {
+            width: 100%;
+            max-width: 400px;
+            border: 1px solid #e6e6e6;
+            padding: 32px;
+            border-radius: 6px;
+        }
+
+        .logo {
+            text-align: center;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 24px;
+        }
+
+        .auth-title {
+            font-size: 20px;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-size: 14px;
+            margin-bottom: 6px;
+            font-weight: 500;
+        }
+
+        input {
+            padding: 10px 12px;
+            font-size: 14px;
+            border: 1px solid #d1d1d1;
+            border-radius: 4px;
+            margin-bottom: 16px;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #1a8917;
+        }
+
+        .btn {
+            padding: 10px;
+            background-color: #1a8917;
+            color: #fff;
+            border: none;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            background-color: #157312;
+        }
+
+        .auth-footer {
+            text-align: center;
+            font-size: 14px;
+            margin-top: 20px;
+        }
+
+        .auth-footer a {
+            color: #1a8917;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .divider {
+            text-align: center;
+            font-size: 13px;
+            color: #6b6b6b;
+            margin: 16px 0;
+        }
+    </style>
+</head>
+<body>
+
+<!-- LOGIN PAGE -->
+<div class="auth-container">
+    <div class="logo">Medium</div>
+    <div class="auth-title">Sign in</div>
+
+    <span style="color:red"> {{form.non_field_errors.0}} </span>
+
+    <form method="post" action="{% url 'account_login' %}">
+         {% csrf_token %}
+        <label>Email</label>
+        <input type="email" name="login" placeholder="you@example.com" required />
+
+        <label>Password</label>
+        <input type="password" name="password" placeholder="********" required />
+
+        <button class="btn" type="submit">Sign in</button>
+    </form>
+
+    <div class="divider">— or —</div>
+
+    <div class="auth-footer">
+        No account? <a href="{% url 'account_signup' %}">Create one</a>
+    </div>
+</div>
+
+<!-- ================= REGISTER PAGE ================= -->
+<!-- Copy below block into login.html -->
+
+<!--
+<div class="auth-container">
+    <div class="logo">Medium</div>
+    <div class="auth-title">Create account</div>
+
+    <form method="post">
+        {% csrf_token %}
+        <label>Username</label>
+        <input type="text" placeholder="jitendra" required />
+
+        <label>Email</label>
+        <input type="email" placeholder="you@example.com" required />
+
+        <label>Password</label>
+        <input type="password" placeholder="********" required />
+
+        <button class="btn" type="submit">Sign up</button>
+    </form>
+
+    <div class="auth-footer">
+        Already have an account? <a href="/login/">Sign in</a>
+    </div>
+</div>
+-->
+
+</body>
+</html>

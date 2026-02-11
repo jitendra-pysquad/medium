@@ -1,0 +1,176 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Medium Clone</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: #ffffff;
+            color: #242424;
+        }
+
+        /* Header */
+        header {
+            border-bottom: 1px solid #e6e6e6;
+            padding: 16px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .nav-actions a {
+            margin-left: 20px;
+            text-decoration: none;
+            font-size: 14px;
+            color: #242424;
+        }
+
+        .btn-primary {
+            padding: 8px 16px;
+            background-color: #1a8917;
+            color: #fff !important;
+            border-radius: 20px;
+            font-weight: 500;
+        }
+
+        /* Layout */
+        .container {
+            display: grid;
+            grid-template-columns: 3fr 1.2fr;
+            gap: 40px;
+            padding: 40px;
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        /* Feed */
+        .article {
+            padding: 24px 0;
+            border-bottom: 1px solid #e6e6e6;
+        }
+
+        .author {
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .title {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .description {
+            font-size: 15px;
+            color: #6b6b6b;
+            margin-bottom: 10px;
+        }
+
+        .meta {
+            font-size: 13px;
+            color: #6b6b6b;
+        }
+
+        /* Sidebar */
+        .sidebar h3 {
+            font-size: 16px;
+            margin-bottom: 16px;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 6px 12px;
+            background-color: #f2f2f2;
+            border-radius: 20px;
+            font-size: 13px;
+            margin: 4px 6px 4px 0;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 13px;
+            color: #6b6b6b;
+        }
+
+        @media (max-width: 900px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo">Medium</div>
+    <div class="nav-actions">
+        <a href="#">Write</a>
+        <a href="{% url 'account_login' %}">Sign in</a>
+        <a href="#" class="btn-primary">Get started</a>
+    </div>
+</header>
+
+<main class="container">
+    <!-- Feed -->
+    <section>
+        <div class="article">
+            <div class="author">Jitendra Chaudhary · 5 min read</div>
+            <div class="title">How Django REST Framework Scales for Large Apps</div>
+            <div class="description">A practical guide to building scalable APIs using Django REST Framework...</div>
+            <div class="meta">Dec 15 · Backend · Django</div>
+        </div>
+
+        <div class="article">
+            <div class="author">Admin · 7 min read</div>
+            <div class="title">Monolith vs Microservices: What Interviewers Expect</div>
+            <div class="description">Let’s clear common confusion around distributed systems and microservices...</div>
+            <div class="meta">Dec 14 · System Design</div>
+        </div>
+
+        <div class="article">
+            <div class="author">Guest Writer · 4 min read</div>
+            <div class="title">Python Decorators Explained with Real Examples</div>
+            <div class="description">Decorators are powerful but confusing. This article breaks them down simply...</div>
+            <div class="meta">Dec 13 · Python</div>
+        </div>
+    </section>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <h3>Recommended topics</h3>
+        <span class="tag">Python</span>
+        <span class="tag">Django</span>
+        <span class="tag">System Design</span>
+        <span class="tag">Microservices</span>
+        <span class="tag">APIs</span>
+        <span class="tag">Career</span>
+    </aside>
+</main>
+
+<footer>
+    © 2025 Medium Clone · Built for practice
+</footer>
+
+</body>
+</html>

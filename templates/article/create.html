@@ -1,0 +1,100 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Write Article</title>
+
+    <style>
+        body {
+            font-family: Georgia, serif;
+            background-color: #fafafa;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 740px;
+            margin: 40px auto;
+            background: white;
+            padding: 40px;
+            border-radius: 6px;
+        }
+
+        h1 {
+            font-size: 32px;
+            margin-bottom: 30px;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: none;
+            border-bottom: 1px solid #ddd;
+            outline: none;
+            margin-bottom: 30px;
+        }
+
+        input[type="file"] {
+            margin-bottom: 30px;
+        }
+
+        button {
+            background-color: #1a8917;
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            font-size: 14px;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #166d13;
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="top-bar">
+        <h1>Write</h1>
+        <button type="submit" form="article-form">Publish</button>
+    </div>
+
+    <form method="post" enctype="multipart/form-data" id="article-form">
+        {% csrf_token %}
+
+        <!-- Title -->
+        <label for="{{ form.title.id_for_label }}">Title</label>
+        {{ form.title }}
+
+        <!-- Content -->
+        <label for="{{ form.text.id_for_label }}">Story</label>
+        {{ form.text }}
+
+        <!-- Image -->
+        <label for="{{ form.image.id_for_label }}">Cover Image</label>
+        {{ form.image }}
+    </form>
+
+</div>
+
+</body>
+</html>

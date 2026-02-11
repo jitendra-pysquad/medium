@@ -1,0 +1,559 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ article.title }} - MediumClone{% endblock %}
+
+{% block css %}
+<style>
+    /* Override main content padding for article layout */
+    .main-content {
+        padding: 0;
+        max-width: 100%;
+    }
+
+    /* Reading Progress Bar */
+    .reading-progress {
+        position: fixed;
+        top: 75px;
+        left: 0;
+        width: 0%;
+        height: 3px;
+        background: var(--primary-accent);
+        z-index: 999;
+        transition: width 0.1s ease;
+    }
+
+    /* Article Header */
+    .article-header {
+        max-width: 740px;
+        margin: 0 auto;
+        padding: 60px 24px 40px;
+    }
+
+    .article-title {
+        font-family: 'Playfair Display', serif;
+        font-size: 48px;
+        font-weight: 700;
+        line-height: 1.2;
+        color: var(--primary-dark);
+        margin-bottom: 24px;
+        letter-spacing: -0.5px;
+    }
+
+    .article-meta {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding: 20px 0;
+        border-bottom: 1px solid var(--border-light);
+        margin-bottom: 40px;
+    }
+
+    .author-avatar {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--primary-accent), #0a5a4f);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        font-size: 18px;
+    }
+
+    .author-info {
+        flex: 1;
+    }
+
+    .author-name {
+        font-weight: 600;
+        color: var(--primary-dark);
+        font-size: 15px;
+        margin-bottom: 4px;
+    }
+
+    .article-date {
+        color: var(--secondary-text);
+        font-size: 14px;
+    }
+
+    .article-actions {
+        display: flex;
+        gap: 8px;
+    }
+
+    .action-btn {
+        padding: 8px 16px;
+        border: 1px solid var(--border-light);
+        background: white;
+        border-radius: 24px;
+        font-size: 14px;
+        color: var(--secondary-text);
+        text-decoration: none;
+        transition: all 0.2s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .action-btn:hover {
+        border-color: var(--primary-dark);
+        color: var(--primary-dark);
+        background: var(--hover-bg);
+    }
+
+    .action-btn.delete {
+        color: #dc3545;
+        border-color: #dc3545;
+    }
+
+    .action-btn.delete:hover {
+        background: #dc3545;
+        color: white;
+    }
+
+    /* Featured Image */
+    .article-image {
+        max-width: 100%;
+        margin: 0 auto 60px;
+        display: block;
+    }
+
+    .article-image img {
+        width: 100%;
+        height: auto;
+        max-height: 500px;
+        object-fit: cover;
+        border-radius: 4px;
+    }
+
+    /* Article Content */
+    .article-body {
+        max-width: 680px;
+        margin: 0 auto;
+        padding: 0 24px;
+    }
+
+    .article-content {
+        font-size: 20px;
+        line-height: 1.8;
+        color: rgba(26, 26, 26, 0.92);
+        margin-bottom: 60px;
+    }
+
+    .article-content p {
+        margin-bottom: 24px;
+    }
+
+    .article-content h2 {
+        font-family: 'Playfair Display', serif;
+        font-size: 32px;
+        font-weight: 700;
+        margin-top: 48px;
+        margin-bottom: 16px;
+        line-height: 1.3;
+    }
+
+    .article-content h3 {
+        font-size: 26px;
+        font-weight: 600;
+        margin-top: 40px;
+        margin-bottom: 12px;
+        line-height: 1.4;
+    }
+
+    .article-content blockquote {
+        border-left: 4px solid var(--primary-dark);
+        padding-left: 24px;
+        margin: 32px 0;
+        font-style: italic;
+        color: var(--secondary-text);
+        font-size: 22px;
+    }
+
+    .article-content code {
+        background: #f4f4f4;
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-family: 'Courier New', monospace;
+        font-size: 16px;
+    }
+
+    .article-content pre {
+        background: #f4f4f4;
+        padding: 20px;
+        border-radius: 8px;
+        overflow-x: auto;
+        margin: 24px 0;
+    }
+
+    .article-content pre code {
+        background: none;
+        padding: 0;
+    }
+
+    .article-content img {
+        width: 100%;
+        height: auto;
+        border-radius: 4px;
+        margin: 32px 0;
+    }
+
+    .article-content ul,
+    .article-content ol {
+        margin: 24px 0;
+        padding-left: 32px;
+    }
+
+    .article-content li {
+        margin-bottom: 12px;
+    }
+
+    /* Article Footer */
+    .article-footer {
+        max-width: 680px;
+        margin: 0 auto;
+        padding: 40px 24px;
+        border-top: 1px solid var(--border-light);
+    }
+
+    .article-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-bottom: 32px;
+    }
+
+    .tag {
+        padding: 8px 16px;
+        background: var(--bg-subtle);
+        border-radius: 24px;
+        font-size: 14px;
+        color: var(--secondary-text);
+        text-decoration: none;
+        transition: all 0.2s ease;
+    }
+
+    .tag:hover {
+        background: var(--border-light);
+        color: var(--primary-dark);
+    }
+
+    /* Comments Section */
+    .comments-section {
+        max-width: 680px;
+        margin: 0 auto;
+        padding: 60px 24px;
+        border-top: 1px solid var(--border-light);
+    }
+
+    .comments-header {
+        font-family: 'Playfair Display', serif;
+        font-size: 32px;
+        font-weight: 700;
+        margin-bottom: 32px;
+        color: var(--primary-dark);
+    }
+
+    .comment-form {
+        background: var(--bg-subtle);
+        padding: 24px;
+        border-radius: 8px;
+        margin-bottom: 40px;
+    }
+
+    .comment-form textarea {
+        width: 100%;
+        min-height: 120px;
+        padding: 16px;
+        border: 1px solid var(--border-light);
+        border-radius: 8px;
+        font-family: 'Source Serif 4', Georgia, serif;
+        font-size: 16px;
+        resize: vertical;
+        transition: all 0.2s ease;
+        background: white;
+    }
+
+    .comment-form textarea:focus {
+        outline: none;
+        border-color: var(--primary-accent);
+        box-shadow: 0 0 0 3px rgba(15, 123, 108, 0.1);
+    }
+
+    .comment-submit {
+        margin-top: 16px;
+        padding: 12px 24px;
+        background: var(--primary-dark);
+        color: white;
+        border: none;
+        border-radius: 24px;
+        font-size: 15px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .comment-submit:hover {
+        background: var(--primary-accent);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(15, 123, 108, 0.2);
+    }
+
+    .comments-list {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+    }
+
+    .comment {
+        padding: 20px;
+        background: white;
+        border: 1px solid var(--border-light);
+        border-radius: 8px;
+        transition: all 0.2s ease;
+    }
+
+    .comment:hover {
+        border-color: var(--primary-accent);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    }
+
+    .comment-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 12px;
+    }
+
+    .comment-avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #6b6b6b, #4a4a4a);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        font-size: 14px;
+    }
+
+    .comment-author {
+        font-weight: 600;
+        color: var(--primary-dark);
+        font-size: 14px;
+    }
+
+    .comment-date {
+        color: var(--secondary-text);
+        font-size: 13px;
+    }
+
+    .comment-text {
+        color: rgba(26, 26, 26, 0.85);
+        font-size: 16px;
+        line-height: 1.6;
+    }
+
+    .no-comments {
+        text-align: center;
+        color: var(--secondary-text);
+        padding: 40px;
+        font-style: italic;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .article-title {
+            font-size: 36px;
+        }
+
+        .article-content {
+            font-size: 18px;
+        }
+
+        .article-content h2 {
+            font-size: 28px;
+        }
+
+        .article-meta {
+            flex-wrap: wrap;
+        }
+
+        .article-actions {
+            width: 100%;
+            justify-content: flex-start;
+        }
+    }
+
+    /* Animation */
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .article-header,
+    .article-content,
+    .comments-section {
+        animation: fadeInUp 0.6s ease-out;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Reading Progress Bar -->
+<div class="reading-progress" id="readingProgress"></div>
+
+<!-- Article Header -->
+<div class="article-header">
+    <h1 class="article-title">{{ article.title }}</h1>
+
+    <div class="article-meta">
+        <div class="author-avatar">
+            {{ article.author.username|first|upper }}
+        </div>
+        <div class="author-info">
+            <div class="author-name">{{ article.author.username }}</div>
+            <div class="article-date">
+                {{ article.published_at|date:"F d, Y" }} · 
+                {{ article.text|wordcount }} words
+            </div>
+        </div>
+
+        {% if request.user == article.author %}
+        <div class="article-actions">
+            <a href="#" class="action-btn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                </svg>
+                Edit
+            </a>
+            <form method="post" action="{% url 'article_delete' pk=article.id %}">
+                {% csrf_token %}
+                <a href="#"
+                   class="action-btn delete"
+                   onclick="event.preventDefault(); this.closest('form').submit();">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="3 6 5 6 21 6"></polyline>
+                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                    </svg>
+                    Delete
+                </a>
+            </form>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Featured Image -->
+{% if article.image %}
+<div class="article-image">
+    <img src="{{ article.image.url }}" alt="{{ article.title }}">
+</div>
+{% endif %}
+
+<!-- Article Content -->
+<div class="article-body">
+    <article class="article-content">
+        {{ article.text|safe }}
+    </article>
+</div>
+
+<!-- Article Footer with Tags (if you have tags) -->
+{% comment %}
+<div class="article-footer">
+    <div class="article-tags">
+        {% for tag in article.tags.all %}
+        <a href="#" class="tag">{{ tag.name }}</a>
+        {% endfor %}
+    </div>
+</div>
+{% endcomment %}
+
+<!-- Comments Section -->
+<div class="comments-section">
+    <h2 class="comments-header">Comments</h2>
+
+    <!-- Comment Form -->
+    <div class="comment-form">
+        <form method="post" action="{% url 'comment_create' article.slug %}">
+            {% csrf_token %}
+            <textarea
+                name="text"
+                placeholder="Share your thoughts..."
+                required
+            ></textarea>
+            <input type="hidden" name="parent_id" id="parent_id">
+            <button type="submit" class="comment-submit">Post Comment</button>
+        </form>
+    </div>
+
+    <!-- Comments List -->
+    <div class="comments-list">
+        {% if article.comments.all %}
+            {% for comment in article.comments.all %}
+            <div class="comment">
+                <div class="comment-header">
+                    <div class="comment-avatar">
+                        {{ comment.user.username|first|upper }}
+                    </div>
+                    <div>
+                        <div class="comment-author">{{ comment.author.username }}</div>
+                        <div class="comment-date">{{ comment.created_at|date:"F d, Y" }}</div>
+                    </div>
+                </div>
+                <div class="comment-text">
+                    {{ comment.text|safe }}
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="no-comments">
+                No comments yet. Be the first to share your thoughts!
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script>
+    // Reading Progress Bar
+    window.addEventListener('scroll', function() {
+        const articleBody = document.querySelector('.article-body');
+        const progressBar = document.getElementById('readingProgress');
+        
+        if (articleBody) {
+            const articleStart = articleBody.offsetTop;
+            const articleHeight = articleBody.offsetHeight;
+            const viewportHeight = window.innerHeight;
+            const scrolled = window.scrollY - articleStart + viewportHeight;
+            
+            const percentage = Math.min(100, Math.max(0, (scrolled / articleHeight) * 100));
+            progressBar.style.width = percentage + '%';
+        }
+    });
+
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block title %}Articles {% endblock title %}
+{% block css %}
+<style>
+    body {
+      font-family: Georgia, serif;
+      background: #fafafa;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 40px auto;
+    }
+
+    .article {
+      background: white;
+      padding: 24px;
+      margin-bottom: 20px;
+      border-radius: 6px;
+    }
+
+    .article h2 {
+      margin: 0 0 10px;
+    }
+
+    .meta {
+      color: #666;
+      font-size: 14px;
+    }
+
+    a {
+      text-decoration: none;
+      color: black;
+    }
+
+    a:hover {
+      text-decoration: none;
+        font-weight: bold;
+
+    }
+</style>
+{% endblock css %}
+
+
+{% block content %}
+<div class="container">
+    <h1>Latest Articles</h1>
+
+    {% for article in articles %}
+    <div class="article">
+        <h2>
+            <a href="{% url 'article_detail' article.slug %}" style="">
+                {{ article.title }}
+            </a>
+        </h2>
+        <div class="meta">
+            By {{ article.author.username }} ·
+            {{ article.published_at|date:"M d, Y" }}
+        </div>
+    </div>
+    {% empty %}
+    <p>No articles yet.</p>
+    {% endfor %}
+</div>
+{% endblock content %}
